@@ -1,0 +1,173 @@
+/* Общие стили */
+body {
+  background-color: black;
+  color: #00FF00;
+  font-family: 'Press Start 2P', monospace;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.logo {
+  width: 100px;
+  margin-top: 20px;
+}
+
+h1 {
+  margin: 10px 0;
+  font-size: 24px;
+}
+
+/* Баланс */
+.balance {
+  margin: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  display: inline-block;
+  padding: 10px;
+  border: 2px solid #00FF00;
+  box-shadow: 0 0 10px #00FF00;
+}
+
+/* Навигация */
+nav {
+  margin: 20px;
+}
+
+nav button {
+  background: #111;
+  border: 2px solid #00FF00;
+  color: #00FF00;
+  font-family: 'Press Start 2P';
+  padding: 10px 20px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+nav button:hover {
+  box-shadow: 0 0 10px #00FF00;
+  background: #000;
+}
+
+/* Вкладки */
+.tab {
+  margin-top: 30px;
+}
+
+/* Контролы Минёра */
+.controls {
+  margin-top: 20px;
+}
+
+.controls input {
+  background: black;
+  border: 2px solid #00FF00;
+  color: #00FF00;
+  padding: 10px;
+  font-family: 'Press Start 2P';
+  width: 120px;
+}
+
+.controls button {
+  background: #111;
+  border: 2px solid #00FF00;
+  color: #00FF00;
+  font-family: 'Press Start 2P';
+  padding: 10px 20px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.controls button:hover {
+  box-shadow: 0 0 10px #00FF00;
+  background: #000;
+}
+
+/* Сетка Минёра */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 60px);
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Модальное окно */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+  background-color: #111;
+  margin: 15% auto;
+  padding: 20px;
+  border: 2px solid #00FF00;
+  width: 300px;
+  text-align: center;
+  color: #00FF00;
+  box-shadow: 0 0 20px #00FF00;
+}
+
+.modal-content input {
+  width: 80%;
+  padding: 10px;
+  margin-top: 10px;
+  background: black;
+  border: 2px solid #00FF00;
+  color: #00FF00;
+  font-family: 'Press Start 2P';
+}
+
+.modal-content button {
+  margin-top: 10px;
+  padding: 10px;
+  background: #00FF00;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: 'Press Start 2P';
+}
+
+.close {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+  color: #00FF00;
+}
+
+/* Footer */
+footer {
+  margin-top: 40px;
+  font-size: 12px;
+  color: #00FF00;
+}
+.cell {
+  width: 60px;
+  height: 60px;
+  background: #111;
+  border: 2px solid #00FF00;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.cell:hover {
+  transform: scale(1.05);
+}
+
+.cell.revealed {
+  cursor: default;
+}
+
+.cell.safe {
+  background-color: #00FF00;
+}
+
+.cell.bomb {
+  background-color: red;
+}
+
