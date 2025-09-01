@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>LOOT CASINO</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<audio id="safeClickSound" src="assets/safe.mp3"></audio>
+<audio id="bombClickSound" src="assets/bomb.mp3"></audio>
+<audio id="rocketLaunchSound" src="assets/launch.mp3"></audio>
+<audio id="rocketCashoutSound" src="assets/cashout.mp3"></audio>
+<audio id="rocketExplodeSound" src="assets/explode.mp3"></audio>
+
+<body>
+  <header>
+    <img src="assets/logo.jpeg" alt="LOOT Logo" class="logo">
+    <h1>LOOT CASINO</h1>
+  <div class="balance" onclick="openPromoModal()">
+  <span class="icon-text">
+    <img src="assets/dollar.png" class="icon">
+    <span>Баланс: <span id="balance">1000</span><span class="currency">₽</span>
+</div>
+
+
+    <nav>
+      <button onclick="showTab('miner')">Минёр</button>
+	 <button onclick="showTab('rocket')">Ракетка</button>
+     <button onclick="showTab('bonanza')">Sweet Bonanza</button> 
+	 <button onclick="showTab('olympus')">Gates of Olympus</button> 
+	 <button onclick="showTab('dogs')">The Dog House</button> 
+	 <button onclick="showTab('ball')">Plinko+</button>
+	  
+
+
+
+    </nav>
+  </header>
+
+  <main>
+    <!-- Минёр -->
+    <section id="miner" class="tab">
+      <h2>Минёр: найди безопасные клетки</h2>
+      <div class="controls">
+        <input type="number" id="bet" placeholder="Ставка ₽" min="1" max="1000">
+        <button onclick="startGame()">Играть</button>
+        <button onclick="cashOut()">Вывести</button>
+      </div>
+      <p id="status">Готов к игре</p>
+      <div id="grid" class="grid"></div>
+    </section>
+	
+	<!-- Rocket Crash -->
+<section id="rocket" class="tab" style="display:none;">
+  <h2>🚀 Ракетка Тамаева</h2>
+  <div class="controls">
+    <input type="number" id="rocketBet" placeholder="Ставка ₽" min="1" max="1000">
+    <button onclick="startRocket()">Старт</button>
+    <button onclick="cashOutRocket()">Вывести</button>
+  </div>
+  <p id="rocketStatus">Готов к запуску</p>
+ <canvas id="rocketCanvas" width="300" height="400" style="background:black; border:2px solid #FF00AA;">
+
+</section>
+
+
+    <!-- Sweet Bonanza  -->
+<section id="bonanza" class="tab" style="display:none;">
+  <h2>Sweet Bonanza 🍬</h2>
+  <div class="slot-wrapper">
+    
+    <!-- Огромный блюр под слотом -->
+    <div class="slot-blur-layer">
+      <iframe src="https://demogamesfree.pragmaticplay.net/gs2c/openGame.do?gameSymbol=vs20fruitsw&websiteUrl=https%3A%2F%2Fdemogamesfree.pragmaticplay.net&jurisdiction=99&lobby_url=https%3A%2F%2Fwww.pragmaticplay.com%2Fen%2F"
+              frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <!-- Основной слот с рамкой -->
+    <div class="slot-foreground wide-frame">
+      <iframe src="https://demogamesfree.pragmaticplay.net/gs2c/openGame.do?gameSymbol=vs20fruitsw&websiteUrl=https%3A%2F%2Fdemogamesfree.pragmaticplay.net&jurisdiction=99&lobby_url=https%3A%2F%2Fwww.pragmaticplay.com%2Fen%2F"
+              width="100%" height="600" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+  </div>
+</section>
+	
+   <!-- Gates of Olympus  -->
+<section id="olympus" class="tab" style="display:none;">
+  <h2>Gates of Olympus ⚡</h2>
+  <div class="slot-wrapper">
+    
+    <!-- Огромный блюр под слотом -->
+    <div class="slot-blur-layer">
+      <iframe src="https://demogamesfree.pragmaticplay.net/gs2c/openGame.do?gameSymbol=vs20olympgate&websiteUrl=https%3A%2F%2Fdemogamesfree.pragmaticplay.net&jurisdiction=99&lobby_url=https%3A%2F%2Fwww.pragmaticplay.com%2Fen%2F"
+              frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <!-- Основной слот с рамкой -->
+    <div class="slot-foreground wide-frame">
+      <iframe src="https://demogamesfree.pragmaticplay.net/gs2c/openGame.do?gameSymbol=vs20olympgate&websiteUrl=https%3A%2F%2Fdemogamesfree.pragmaticplay.net&jurisdiction=99&lobby_url=https%3A%2F%2Fwww.pragmaticplay.com%2Fen%2F"
+              width="100%" height="600" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+  </div>
+</section>
+	
+<!-- The Dog House -->
+<section id="dogs" class="tab" style="display:none;">
+  <h2>The Dog House  🐶</h2>
+  <div class="slot-wrapper">
+    
+    <!-- Огромный блюр под слотом -->
+    <div class="slot-blur-layer">
+      <iframe src="https://demogamesfree.pragmaticplay.net/gs2c/openGame.do?lang=ru&cur=RUB&gameSymbol=vs20doghouse&websiteUrl=https%3A%2F%2Fdemogamesfree.pragmaticplay.net&jurisdiction=99&lobbyURL=https%3A%2F%2Fwww.pragmaticplay.com"
+              frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <!-- Основной слот с рамкой -->
+    <div class="slot-foreground wide-frame">
+      <iframe src="https://demogamesfree.pragmaticplay.net/gs2c/openGame.do?lang=ru&cur=RUB&gameSymbol=vs20doghouse&websiteUrl=https%3A%2F%2Fdemogamesfree.pragmaticplay.net&jurisdiction=99&lobbyURL=https%3A%2F%2Fwww.pragmaticplay.com"
+              width="100%" height="600" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+  </div>
+</section>
+
+<!-- PLINKO! -->
+<section id="ball" class="tab" style="display:none;">
+  <h2>Plinko+ 🔴</h2>
+  <div class="slot-wrapper">
+    
+    <!-- Огромный блюр под слотом -->
+    <div class="slot-blur-layer">
+      <iframe src="https://demogamesfree.pragmaticplay.net/gs2c/openGame.do?gameSymbol=ar10plinko&websiteUrl=https%3A%2F%2Fdemogamesfree.pragmaticplay.net&jurisdiction=99&lobby_url=https%3A%2F%2Fwww.pragmaticplay.com%2Fen%2F"
+              frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <!-- Основной слот с рамкой -->
+    <div class="slot-foreground wide-frame">
+      <iframe src="https://demogamesfree.pragmaticplay.net/gs2c/openGame.do?gameSymbol=ar10plinko&websiteUrl=https%3A%2F%2Fdemogamesfree.pragmaticplay.net&jurisdiction=99&lobby_url=https%3A%2F%2Fwww.pragmaticplay.com%2Fen%2F"
+              width="100%" height="600" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </main>
+
+<footer>
+  <p>Copyright <span id="easterEgg">©</span> 2025 LOOT. All rights reserved.</p>
+</footer>
+
+<audio id="mellstroySound" src="assets/mellstroy.mp3"></audio>
+
+
+
+  <!-- Модальное окно промокода -->
+  <div id="promoModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closePromoModal()">&times;</span>
+      <h2>Введите промокод</h2>
+      <input type="text" id="promoCodeInput" placeholder="Например: LOOT500">
+      <button onclick="applyPromoCode()">Активировать</button>
+      <p id="promoStatus"></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

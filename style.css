@@ -1,0 +1,285 @@
+/* === Общие стили === */
+body {
+  background-color: black;
+  color: #FF00AA;
+  font-family: 'Press Start 2P', monospace;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.logo {
+  width: 100px;
+  margin-top: 20px;
+}
+
+h1 {
+  margin: 10px 0;
+  font-size: 24px;
+}
+
+/* === Баланс === */
+.balance {
+  margin: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  display: inline-block;
+  padding: 10px;
+  border: 2px solid #FF00AA;
+  box-shadow: 0 0 10px #FF00AA;
+}
+
+.icon-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon {
+  width: 18px;
+  height: 20px;
+  image-rendering: pixelated;
+  transform: translateY(-1px);
+}
+.slot-wrapper {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  height: 600px;
+}
+
+.slot-blur-layer {
+  position: absolute;
+  top: -100px;
+  left: -200px;
+  right: -200px;
+  bottom: -100px;
+  z-index: 0;
+  transform: scale(1.2);
+  filter: blur(229px);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.slot-blur-layer iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.slot-foreground {
+  position: relative;
+  z-index: 1;
+}
+
+.wide-frame {
+  border: 4px solid #FF00AA;
+  border-radius: 10px;
+  background: #000;
+  box-shadow:
+    0 0 40px #FF00AA,
+    inset 0 0 12px #FF00AA;
+  overflow: hidden;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* === Навигация === */
+nav {
+  margin: 20px;
+}
+
+nav button {
+  background: #111;
+  border: 2px solid #FF00AA;
+  color: #FF00AA;
+  font-family: 'Press Start 2P';
+  padding: 10px 20px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+nav button:hover {
+  box-shadow: 0 0 10px #FF00AA;
+  background: #000;
+}
+
+/* === Вкладки === */
+.tab {
+  margin-top: 30px;
+}
+
+/* === Контролы Минёра === */
+.controls {
+  margin-top: 20px;
+}
+
+.controls input {
+  background: black;
+  border: 2px solid #FF00AA;
+  color: #FF00AA;
+  padding: 10px;
+  font-family: 'Press Start 2P';
+  width: 120px;
+}
+
+.controls button {
+  background: #111;
+  border: 2px solid #FF00AA;
+  color: #FF00AA;
+  font-family: 'Press Start 2P';
+  padding: 10px 20px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.controls button:hover {
+  box-shadow: 0 0 10px #FF00AA;
+  background: #000;
+}
+
+/* === Сетка Минёра === */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 60px);
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.cell {
+  width: 60px;
+  height: 60px;
+  background: #111;
+  border: 2px solid #FF00AA;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  font-size: 24px;
+  text-align: center;
+  line-height: 60px;
+}
+
+.cell:hover {
+  transform: scale(1.05);
+}
+
+.cell.revealed {
+  cursor: default;
+}
+
+/* === Состояния клеток === */
+.cell.safe {
+  background-color: #FF00AA;
+  color: black;
+}
+
+.cell.bomb {
+  background-color: red;
+}
+
+.cell.bomb-reveal {
+  background-color: red;
+}
+
+/* === Модальное окно промокода === */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+  background-color: #111;
+  margin: 15% auto;
+  padding: 20px;
+  border: 2px solid #FF00AA;
+  width: 300px;
+  text-align: center;
+  color: #FF00AA;
+  box-shadow: 0 0 20px #FF00AA;
+}
+
+.modal-content input {
+  width: 80%;
+  padding: 10px;
+  margin-top: 10px;
+  background: black;
+  border: 2px solid #FF00AA;
+  color: #FF00AA;
+  font-family: 'Press Start 2P';
+}
+
+.modal-content button {
+  margin-top: 10px;
+  padding: 10px;
+  background: #FF00AA;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: 'Press Start 2P';
+}
+
+.close {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+  color: #FF00AA;
+}
+
+/* === Footer === */
+footer {
+  margin-top: 40px;
+  font-size: 12px;
+  color: #FF00AA;
+}
+
+.rocket-visual {
+  position: relative;
+  height: 200px;
+  margin: 20px auto;
+  overflow: hidden;
+}
+
+.rocket {
+  font-size: 48px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: liftOff 3s linear infinite;
+  animation-play-state: paused;
+}
+
+.wind {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(255,255,255,0.1) 0px,
+    rgba(255,255,255,0.1) 2px,
+    transparent 4px,
+    transparent 6px
+  );
+  animation: windFlow 1s linear infinite;
+}
+
+@keyframes liftOff {
+  0% { bottom: 0; }
+  100% { bottom: 100%; }
+}
+
+@keyframes windFlow {
+  0% { background-position: 0 0; }
+  100% { background-position: 100px 100px; }
+}
