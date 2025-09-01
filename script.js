@@ -30,19 +30,19 @@ function applyPromoCode() {
       status.textContent = "Промокод KICK500 активирован! +500₽";
       break;
     case "REWAYS":
-      const bonus = Math.floor(balance * 0.25);
+      const bonus = Math.floor(balance * 0.50);
       balance += bonus;
-      status.textContent = `Стабильный промик REWAYS: +25% (${bonus}₽)`;
+      status.textContent = `Жирный промик REWAYS: +50% (${bonus}₽)`;
       break;
     case "MELL":
       balance += 100;
       status.textContent = "MELL: +100₽ — удача на твоей стороне";
       break;
     case "BLINKS":
-      const randomBonus = Math.floor(Math.random() * (500 - 100 + 1)) + 100;
-      balance += randomBonus;
-      status.textContent = `BLINKS: +${randomBonus}₽ — рандомный буст!`;
-      break;
+  const randomBonus = Math.floor(Math.random() * (1000 - 500 + 1)) + 500;
+  balance += randomBonus;
+  status.textContent = `BLINKS: +${randomBonus}₽ — жирный буст от 500 до 1000!+1 к удаче!`;
+  break;
     case "BURNBANK":
       const totalLoss = balance;
       balance = 0;
@@ -371,6 +371,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
 
