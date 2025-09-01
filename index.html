@@ -10,12 +10,22 @@
   <header>
     <img src="logo.jpeg" alt="KICK Logo" class="logo">
     <h1>KICK CASINO</h1>
-    <div class="balance" onclick="openPromoModal()">💳 Баланс: <span id="balance">1000</span>₽</div>
+  <div class="balance" onclick="openPromoModal()">
+  <span class="icon-text">
+    <img src="dollar.png" class="icon">
+    <span>Баланс: <span id="balance">1000</span><span class="currency">₽</span>
+</div>
+
+
     <nav>
       <button onclick="showTab('miner')">Минёр</button>
-      <button onclick="showTab('bonanza')">Sweet Bonanza</button>
-	  <button onclick="showTab('olympus')">Gates of Olympus</button>
-	  <button onclick="showTab('dogs')">The Dog House</button>
+	 <button onclick="showTab('rocket')">Ракетка</button>
+     <button onclick="showTab('bonanza')">Sweet Bonanza</button> 
+	 <button onclick="showTab('olympus')">Gates of Olympus</button> 
+	 <button onclick="showTab('dogs')">The Dog House</button> 
+	 <button onclick="showTab('ball')">Plinko+</button>
+	  
+
 
 
     </nav>
@@ -33,26 +43,49 @@
       <p id="status">Готов к игре</p>
       <div id="grid" class="grid"></div>
     </section>
+	
+	<!-- Rocket Crash -->
+<section id="rocket" class="tab" style="display:none;">
+  <h2>🚀 Ракетка Тамаева</h2>
+  <div class="controls">
+    <input type="number" id="rocketBet" placeholder="Ставка ₽" min="1" max="1000">
+    <button onclick="startRocket()">Старт</button>
+    <button onclick="cashOutRocket()">Вывести</button>
+  </div>
+  <p id="rocketStatus">Готов к запуску</p>
+  <canvas id="rocketCanvas" width="300" height="400" style="background:black; border:2px solid #00FF00;"></canvas>
+</section>
+
 
     <!-- Sweet Bonanza -->
     <section id="bonanza" class="tab" style="display:none;">
       <h2>Sweet Bonanza 🍬</h2>
-      <iframe src="https://demogamesfree.pragmaticplay.net/gs2c/html5Game.do?extGame=1&symbol=vs20fruitsw&gname=Sweet%20Bonanza&jurisdictionID=99&mgckey=stylename@generic~SESSION@19447781-87f1-4dbc-b158-b07d3d59e7f9"
-              width="100%" height="600" frameborder="0" allowfullscreen></iframe>
+     <iframe src=https://demogamesfree.pragmaticplay.net/gs2c/openGame.do?gameSymbol=vs20fruitsw&websiteUrl=https%3A%2F%2Fdemogamesfree.pragmaticplay.net&jurisdiction=99&lobby_url=https%3A%2F%2Fwww.pragmaticplay.com%2Fen%2F"
+          width="100%" height="600" frameborder="0" allowfullscreen></iframe>
     </section>
 	
-	<!-- Gates of Olympus -->
-	<section id="olympus" class="tab" style="display:none;">
-  <h2>Gates of Olympus ⚡</h2>
-  <iframe src="https://demogamesfree.pragmaticplay.net/gs2c/html5Game.do?extGame=1&symbol=vs20olympgate&gname=Gates%20of%20Olympus&jurisdictionID=99&lobbyUrl=https%3A%2F%2Fwww.pragmaticplay.com&mgckey=stylename@generic~SESSION@ca9e10cf-96d5-482d-87a5-7adf17927f53"
+    <!-- Gates of Olympus -->
+    <section id="olympus" class="tab" style="display:none;">
+      <h2>Gates of Olympus ⚡</h2>
+     <iframe src=https://demogamesfree.pragmaticplay.net/gs2c/openGame.do?gameSymbol=vs20olympgate&websiteUrl=https%3A%2F%2Fdemogamesfree.pragmaticplay.net&jurisdiction=99&lobby_url=https%3A%2F%2Fwww.pragmaticplay.com%2Fen%2F"
           width="100%" height="600" frameborder="0" allowfullscreen></iframe>
-</section>
+    </section>
+	
 <!-- The Dog House -->
 <section id="dogs" class="tab" style="display:none;">
-  <h2>The Dog House</h2>
-  <iframe src="https://demogamesfree.pragmaticplay.net/gs2c/openGame.do?lang=ru&cur=EUR&gameSymbol=vs20doghouse&websiteUrl=https%3A%2F%2Fdemogamesfree.pragmaticplay.net&jurisdiction=99&lobbyURL=https%3A%2F%2Fwww.pragmaticplay.com"
+  <h2>The Dog House  🐶</h2>
+  <iframe src="https://demogamesfree.pragmaticplay.net/gs2c/openGame.do?lang=ru&cur=RUB&gameSymbol=vs20doghouse&websiteUrl=https%3A%2F%2Fdemogamesfree.pragmaticplay.net&jurisdiction=99&lobbyURL=https%3A%2F%2Fwww.pragmaticplay.com"
           width="100%" height="600" frameborder="0" allowfullscreen></iframe>
 </section>
+
+<!-- PLINKO! -->
+<section id="ball" class="tab" style="display:none;">
+  <h2>Plinko+ 🔴</h2>
+  <iframe src="https://demogamesfree.pragmaticplay.net/gs2c/openGame.do?gameSymbol=ar10plinko&websiteUrl=https%3A%2F%2Fdemogamesfree.pragmaticplay.net&jurisdiction=99&lobby_url=https%3A%2F%2Fwww.pragmaticplay.com%2Fen%2F"
+          width="100%" height="600" frameborder="0" allowfullscreen></iframe>
+</section>
+
+
 
 
 
@@ -62,14 +95,14 @@
   </main>
 
   <footer>
-    <p>© 2025 KICK Underground</p>
+    <p>Copyright © 2025 KICK. All rights reserved.</p>
   </footer>
 
   <!-- Модальное окно промокода -->
   <div id="promoModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closePromoModal()">&times;</span>
-      <h2>🎁 Введите промокод</h2>
+      <h2>Введите промокод</h2>
       <input type="text" id="promoCodeInput" placeholder="Например: KICK500">
       <button onclick="applyPromoCode()">Активировать</button>
       <p id="promoStatus"></p>

@@ -170,4 +170,25 @@ footer {
 .cell.bomb {
   background-color: red;
 }
+.icon-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* расстояние между иконкой и текстом */
+}
+
+.icon {
+  width: 18px;
+  height: 20px;
+  image-rendering: pixelated;
+  transform: translateY(-1px); /* точная подгонка по вертикали */
+}
+
+
+
+
+
+
+
+
+
 
