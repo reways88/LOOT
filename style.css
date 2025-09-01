@@ -1,4 +1,4 @@
-/* Общие стили */
+/* === Общие стили === */
 body {
   background-color: black;
   color: #00FF00;
@@ -18,7 +18,7 @@ h1 {
   font-size: 24px;
 }
 
-/* Баланс */
+/* === Баланс === */
 .balance {
   margin: 10px;
   cursor: pointer;
@@ -29,7 +29,20 @@ h1 {
   box-shadow: 0 0 10px #00FF00;
 }
 
-/* Навигация */
+.icon-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon {
+  width: 18px;
+  height: 20px;
+  image-rendering: pixelated;
+  transform: translateY(-1px);
+}
+
+/* === Навигация === */
 nav {
   margin: 20px;
 }
@@ -49,12 +62,12 @@ nav button:hover {
   background: #000;
 }
 
-/* Вкладки */
+/* === Вкладки === */
 .tab {
   margin-top: 30px;
 }
 
-/* Контролы Минёра */
+/* === Контролы Минёра === */
 .controls {
   margin-top: 20px;
 }
@@ -83,7 +96,7 @@ nav button:hover {
   background: #000;
 }
 
-/* Сетка Минёра */
+/* === Сетка Минёра === */
 .grid {
   display: grid;
   grid-template-columns: repeat(5, 60px);
@@ -92,7 +105,41 @@ nav button:hover {
   margin-top: 20px;
 }
 
-/* Модальное окно */
+.cell {
+  width: 60px;
+  height: 60px;
+  background: #111;
+  border: 2px solid #00FF00;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  font-size: 24px;
+  text-align: center;
+  line-height: 60px;
+}
+
+.cell:hover {
+  transform: scale(1.05);
+}
+
+.cell.revealed {
+  cursor: default;
+}
+
+/* === Состояния клеток === */
+.cell.safe {
+  background-color: #00FF00;
+  color: black;
+}
+
+.cell.bomb {
+  background-color: red;
+}
+
+.cell.bomb-reveal {
+  background-color: red;
+}
+
+/* === Модальное окно промокода === */
 .modal {
   display: none;
   position: fixed;
@@ -140,55 +187,49 @@ nav button:hover {
   color: #00FF00;
 }
 
-/* Footer */
+/* === Footer === */
 footer {
   margin-top: 40px;
   font-size: 12px;
   color: #00FF00;
 }
-.cell {
-  width: 60px;
-  height: 60px;
-  background: #111;
-  border: 2px solid #00FF00;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
+
+.rocket-visual {
+  position: relative;
+  height: 200px;
+  margin: 20px auto;
+  overflow: hidden;
 }
 
-.cell:hover {
-  transform: scale(1.05);
+.rocket {
+  font-size: 48px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: liftOff 3s linear infinite;
+  animation-play-state: paused;
 }
 
-.cell.revealed {
-  cursor: default;
+.wind {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(255,255,255,0.1) 0px,
+    rgba(255,255,255,0.1) 2px,
+    transparent 4px,
+    transparent 6px
+  );
+  animation: windFlow 1s linear infinite;
 }
 
-.cell.safe {
-  background-color: #00FF00;
+@keyframes liftOff {
+  0% { bottom: 0; }
+  100% { bottom: 100%; }
 }
 
-.cell.bomb {
-  background-color: red;
+@keyframes windFlow {
+  0% { background-position: 0 0; }
+  100% { background-position: 100px 100px; }
 }
-.icon-text {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px; /* расстояние между иконкой и текстом */
-}
-
-.icon {
-  width: 18px;
-  height: 20px;
-  image-rendering: pixelated;
-  transform: translateY(-1px); /* точная подгонка по вертикали */
-}
-
-
-
-
-
-
-
-
-
-

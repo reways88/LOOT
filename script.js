@@ -73,7 +73,9 @@ function applyPromoCode() {
 // 💣 Минёр
 let currentWin = 0;
 let gameActive = false;
-let steps = 0; // счётчик безопасных ходов
+let steps = 0;
+let bombIndexes = [];
+let cells = [];
 
 function startGame() {
   const bet = parseInt(document.getElementById("bet").value);
@@ -91,56 +93,96 @@ function startGame() {
   balanceEl.textContent = balance;
   currentWin = bet;
   gameActive = true;
-  steps = 0; // сброс при старте
-  status.textContent = "💣 Игра началась! Выбирай клетки или выводи";
+  steps = 0;
+  status.textContent = "💣 Игра началась!";
+
+  bombIndexes = [];
+  cells = [];
+
+  while (bombIndexes.length < 6) {                    ///кол-во бомб
+    const index = Math.floor(Math.random() * 25);
+    if (!bombIndexes.includes(index)) bombIndexes.push(index);
+  }
 
   grid.innerHTML = "";
   for (let i = 0; i < 25; i++) {
     const cell = document.createElement("div");
     cell.classList.add("cell");
-    cell.onclick = () => revealCell(cell);
+    cell.dataset.index = i;
+    cell.onclick = () => revealCell(i);
     grid.appendChild(cell);
+    cells.push(cell);
   }
 }
 
-function revealCell(cell) {
-  if (!gameActive || cell.classList.contains("revealed")) return;
+function revealCell(index) {
+  if (!gameActive || cells[index].classList.contains("revealed")) return;
 
-  const isBomb = Math.random() < 0.2;
+  const cell = cells[index];
+  const isBomb = bombIndexes.includes(index);
   cell.classList.add("revealed");
+
+  const safeClickSound = document.getElementById("safeClickSound");
+  const bombClickSound = document.getElementById("bombClickSound");
+  safeClickSound.volume = 1;
+  bombClickSound.volume = 0.4;
+
 
   if (isBomb) {
     cell.classList.add("bomb");
+    bombClickSound.currentTime = 0;
+    bombClickSound.play();
     document.getElementById("status").textContent = "💥 Бомба! Вы проиграли";
     currentWin = 0;
     gameActive = false;
+    revealAllBombs();
     disableGrid();
   } else {
     cell.classList.add("safe");
+    safeClickSound.currentTime = 0;
+    safeClickSound.play();
     steps++;
     const multiplier = 1 + 0.3 * steps;
     currentWin = Math.floor(parseInt(document.getElementById("bet").value) * multiplier);
-    document.getElementById("status").textContent = `✅ Ход ${steps} — множитель x${multiplier.toFixed(2)} — выигрыш: ${currentWin}`;
+    document.getElementById("status").textContent = `✅ Ход ${steps} — x${multiplier.toFixed(2)} — выигрыш: ${currentWin}`;
   }
 }
 
+
 function cashOut() {
   if (!gameActive || currentWin === 0) return;
-
   let balance = parseInt(document.getElementById("balance").textContent);
   balance += currentWin;
   document.getElementById("balance").textContent = balance;
   document.getElementById("status").textContent = `💸 Вы забрали ${currentWin}`;
+  const cashoutSound = document.getElementById("rocketCashoutSound");
+  cashoutSound.volume = 0.5;
+cashoutSound.currentTime = 0;
+cashoutSound.play();
+
   gameActive = false;
   disableGrid();
 }
 
 function disableGrid() {
-  document.querySelectorAll(".cell").forEach(cell => cell.onclick = null);
+  cells.forEach(cell => cell.onclick = null);
+}
+
+function revealAllBombs() {
+  bombIndexes.forEach(index => {
+    const cell = cells[index];
+    if (!cell.classList.contains("bomb")) {
+      cell.classList.add("bomb-reveal");
+    }
+  });
 }
 
 
+
+
 // 🚀 Rocket Crash (эмодзи-версия)
+
+
 let rocketRunning = false;
 let rocketExploded = false;
 let rocketMultiplier = 1.00;
@@ -182,7 +224,6 @@ function animateWind() {
 
 function startRocket() {
   if (rocketRunning) return;
-
   const bet = parseFloat(document.getElementById("rocketBet").value);
   const balanceEl = document.getElementById("balance");
   let balance = parseInt(balanceEl.textContent);
@@ -203,6 +244,10 @@ function startRocket() {
   animateWind();
 
   document.getElementById("rocketStatus").textContent = "🚀 Взлетаем...";
+  const launchSound = document.getElementById("rocketLaunchSound");
+  launchSound.volume = 0.6;
+launchSound.currentTime = 0;
+launchSound.play();
 
   rocketInterval = setInterval(() => {
     rocketMultiplier += 0.01 + rocketMultiplier * 0.015;
@@ -225,19 +270,39 @@ function cashOutRocket() {
   let balance = parseInt(document.getElementById("balance").textContent);
   balance += Math.floor(win);
   document.getElementById("balance").textContent = balance;
+  
+  const cashoutSound = document.getElementById("rocketCashoutSound");
+  cashoutSound.volume = 0.5;
+cashoutSound.currentTime = 0;
+cashoutSound.play();
+
 
   rocketRunning = false;
-  document.getElementById("rocketStatus").textContent = `Вывод: x${rocketMultiplier.toFixed(2)} = ₽${Math.floor(win)}`;
+
+  // Генерируем "могла взорваться на..."
+  const couldHaveExplodedAt = (rocketMultiplier + Math.random() * 1.5 + 0.2).toFixed(2);
+
+  document.getElementById("rocketStatus").textContent =
+    `Вывод: x${rocketMultiplier.toFixed(2)} = ₽${Math.floor(win)} — 🚀 взорвалась на x${couldHaveExplodedAt}`;
 }
+
 
 function explodeRocket() {
   clearInterval(rocketInterval);
   clearInterval(windInterval);
   rocketExploded = true;
   rocketRunning = false;
-  document.getElementById("rocketStatus").textContent = "Ракета взорвалась!";
+
+  document.getElementById("rocketStatus").textContent =
+    `💥 Ракета взорвалась на x${rocketMultiplier.toFixed(2)}! Вы не успели вывести`;
+	const explodeSound = document.getElementById("rocketExplodeSound");
+explodeSound.currentTime = 0;
+explodeSound.play();
+
+
   drawExplosion();
 }
+
 
 function drawExplosion() {
   rocketCtx.clearRect(0, 0, rocketCanvas.width, rocketCanvas.height);
@@ -246,6 +311,8 @@ function drawExplosion() {
   rocketCtx.fillStyle = "#FF0000";
   rocketCtx.fillText("💥", rocketCanvas.width / 2, rocketCanvas.height / 2 + 24);
 }
+
+
 
 
 //Баланс скрытие
@@ -280,6 +347,30 @@ function showTab(tabName) {
     activeTab.style.display = 'block';
   }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const egg = document.getElementById("easterEgg");
+  const sound = document.getElementById("mellstroySound");
+  let lastPlayed = 0;
+  const cooldown = 15000;
+
+  sound.volume = 0.3; // 👈 вот тут регулируем громкость
+
+  if (egg && sound) {
+    egg.style.cursor = "pointer";
+
+    egg.addEventListener("click", () => {
+      const now = Date.now();
+      if (now - lastPlayed >= cooldown) {
+        sound.currentTime = 0;
+        sound.play();
+        lastPlayed = now;
+      } else {
+        console.log("⏳ Подожди немного перед следующим запуском");
+      }
+    });
+  }
+});
 
 
 

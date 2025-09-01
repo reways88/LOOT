@@ -6,13 +6,19 @@
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
+<audio id="safeClickSound" src="assets/safe.mp3"></audio>
+<audio id="bombClickSound" src="assets/bomb.mp3"></audio>
+<audio id="rocketLaunchSound" src="assets/launch.mp3"></audio>
+<audio id="rocketCashoutSound" src="assets/cashout.mp3"></audio>
+<audio id="rocketExplodeSound" src="assets/explode.mp3"></audio>
+
 <body>
   <header>
-    <img src="logo.jpeg" alt="KICK Logo" class="logo">
+    <img src="assets/logo.jpeg" alt="KICK Logo" class="logo">
     <h1>KICK CASINO</h1>
   <div class="balance" onclick="openPromoModal()">
   <span class="icon-text">
-    <img src="dollar.png" class="icon">
+    <img src="assets/dollar.png" class="icon">
     <span>Баланс: <span id="balance">1000</span><span class="currency">₽</span>
 </div>
 
@@ -94,9 +100,13 @@
 
   </main>
 
-  <footer>
-    <p>Copyright © 2025 KICK. All rights reserved.</p>
-  </footer>
+<footer>
+  <p>Copyright <span id="easterEgg">©</span> 2025 KICK. All rights reserved.</p>
+</footer>
+
+<audio id="mellstroySound" src="assets/mellstroy.mp3"></audio>
+
+
 
   <!-- Модальное окно промокода -->
   <div id="promoModal" class="modal">
