@@ -283,3 +283,190 @@ footer {
   0% { background-position: 0 0; }
   100% { background-position: 100px 100px; }
 }
+/* === Анимация логотипа === */
+#logoGifContainer {
+  position: fixed;
+  bottom: -200px; /* изначально за пределами экрана */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  transition: bottom 0.6s ease-in-out;
+}
+
+#logoGifContainer.show {
+  bottom: 50px; /* конечная позиция при показе */
+}
+
+#logoGif {
+  max-width: 300px;
+}
+@keyframes logoSpawnIn {
+  0% {
+    transform: translateX(-50%) translateY(200px) scale(0.5) rotate(-15deg);
+    opacity: 0;
+  }
+  60% {
+    transform: translateX(-50%) translateY(-10px) scale(1.05) rotate(5deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) translateY(0px) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes logoSpawnOut {
+  0% {
+    transform: translateX(-50%) translateY(0px) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) translateY(200px) scale(0.8) rotate(10deg);
+    opacity: 0;
+  }
+}
+
+/* === 📱 Мобильная оптимизация === */
+@media (max-width: 1024px) {
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  nav button {
+    padding: 8px 12px;
+    font-size: 12px;
+    margin: 4px;
+  }
+
+  iframe {
+    height: 500px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 12px;
+  }
+
+  .logo {
+    width: 70px;
+    margin-top: 10px;
+  }
+
+  h1 {
+    font-size: 16px;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  nav button {
+    padding: 6px 8px;
+    font-size: 10px;
+    margin: 3px;
+  }
+
+  .controls input,
+  .controls button {
+    width: 100%;
+    max-width: 150px;
+    padding: 8px;
+    font-size: 10px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(5, 50px);
+    gap: 6px;
+  }
+
+  .cell {
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+    line-height: 50px;
+  }
+
+  iframe {
+    height: 400px !important;
+  }
+
+  .slot-wrapper {
+    height: auto;
+  }
+
+  footer {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: repeat(5, 40px);
+    gap: 4px;
+  }
+
+  .cell {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+    line-height: 40px;
+  }
+
+  iframe {
+    height: 300px !important;
+  }
+}
+
+/* Гибкость для гифок */
+#logoGifContainer img,
+.mell-gif {
+  max-width: 90vw;
+  height: auto;
+}
+/* === 📱 Адаптивная сетка Минёра === */
+@media (max-width: 768px) {
+  .grid {
+    width: 100%;
+    max-width: 320px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+  }
+
+  .cell {
+    aspect-ratio: 1 / 1; /* делает клетки квадратными */
+    width: 100%;
+    height: auto;
+    font-size: clamp(12px, 4vw, 18px); /* адаптивный текст */
+    line-height: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    max-width: 260px;
+    gap: 3px;
+  }
+
+  .cell {
+    font-size: clamp(10px, 4vw, 16px);
+  }
+}
+/* === Анимация нажатия клетки Минёра === */
+.cell {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cell:active {
+  transform: scale(0.9);
+  box-shadow: 0 0 8px #FF00AA, inset 0 0 5px #FF00AA;
+}
+
+
