@@ -457,7 +457,35 @@ function showPromoAnimation(gifPath, soundPath, durationMs = 3010) {
 
 
 
+// === Пасхалка 1: Тройное нажатие "A" ===
+let aPressCount = 0;
+let aPressTimer;
 
+document.addEventListener("keydown", (e) => {
+  if (e.key.toLowerCase() === "a") {
+    aPressCount++;
+    clearTimeout(aPressTimer);
+    aPressTimer = setTimeout(() => { aPressCount = 0; }, 800); // сброс через 0.8 сек
+
+    if (aPressCount === 3) {
+      aPressCount = 0;
+      // длительность 6.018 сек
+      showPromoAnimation("assets/bam-bam-bam.gif", "assets/bam.mp3", 6018);
+    }
+  }
+});
+
+// === Пасхалка 2: Клик по значку доллара ===
+document.addEventListener("DOMContentLoaded", () => {
+  const dollarIcon = document.querySelector(".icon");
+  if (dollarIcon) {
+    dollarIcon.style.cursor = "pointer";
+    dollarIcon.addEventListener("click", () => {
+      // длительность 5.018 сек
+      showPromoAnimation("assets/money-rain.gif", "assets/money.mp3", 5018);
+    });
+  }
+});
 
 
 
