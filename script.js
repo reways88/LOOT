@@ -84,6 +84,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // Масштабируем гифки и модалки
     const style = document.createElement("style");
     style.textContent = `
+        /* Центрирование сетки Минёра на мобилках */
+        .miner-grid {
+            margin: 0 auto !important;
+            display: grid !important;
+            justify-content: center !important;
+        }
+
         /* Слоты: рамка на мобилках */
         .slots-container {
             box-sizing: border-box;
@@ -120,7 +127,27 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll("button, .clickable").forEach(el => {
         el.addEventListener("touchstart", e => {
             e.currentTarget.click();
+        
+    // === Вибрация Минёра ===
+    document.querySelectorAll('.miner-cell').forEach(cell => {
+        cell.addEventListener('click', () => {
+            if (cell.classList.contains('bomb')) {
+                if (navigator.vibrate) navigator.vibrate([200, 100, 200]); // Бомба
+            } else if (cell.classList.contains('safe')) {
+                if (navigator.vibrate) navigator.vibrate([100]); // Безопасно
+            }
         });
+    });
+
+    // === Вибрация в Ракетке ===
+    const rocketExplodeEl = document.getElementById('rocketExplode');
+    if (rocketExplodeEl) {
+        rocketExplodeEl.addEventListener('explosion', () => {
+            if (navigator.vibrate) navigator.vibrate([300, 150, 300]); // Взрыв
+        });
+    }
+
+});
     });
 
     // Пасхалка
@@ -492,116 +519,4 @@ function showTab(tabName) {
     activeTab.style.display = 'block';
   }
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  const egg = document.getElementById("easterEgg");
-  const sound = document.getElementById("mellstroySound");
-  let lastPlayed = 0;
-  const cooldown = 15000;
-
-  sound.volume = 0.3; // 👈 вот тут регулируем громкость
-
-  if (egg && sound) {
-    egg.style.cursor = "pointer";
-
-    egg.addEventListener("click", () => {
-      const now = Date.now();
-      if (now - lastPlayed >= cooldown) {
-        sound.currentTime = 0;
-        sound.play();
-        lastPlayed = now;
-      } else {
-        console.log("⏳ Подожди немного перед следующим запуском");
-      }
-    });
-  }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const logo = document.querySelector(".logo");
-  const soundSrc = "assets/logo-sound.mp3";
-  const gifSrc = "assets/logo-animation.gif";
-  let isPlaying = false;
-
-  logo.addEventListener("click", () => {
-    if (isPlaying) return;
-    isPlaying = true;
-
-    // Контейнер
-    const gifContainer = document.createElement("div");
-    gifContainer.style.position = "fixed";
-    gifContainer.style.left = "50%";
-    gifContainer.style.bottom = "50px";
-    gifContainer.style.transform = "translateX(-50%)";
-    gifContainer.style.zIndex = "9999";
-    gifContainer.style.pointerEvents = "none";
-
-    // Гифка
-    const gifImage = document.createElement("img");
-    gifImage.src = gifSrc + "?t=" + Date.now(); // сброс кеша
-    gifImage.style.maxWidth = "300px";
-    gifImage.style.animation = "logoSpawnIn 0.8s ease-out forwards"; // только появление
-    gifContainer.appendChild(gifImage);
-    document.body.appendChild(gifContainer);
-
-    // Запуск звука
-    const sound = new Audio(soundSrc);
-    sound.volume = 1.0;
-    sound.play().catch(err => console.warn("Ошибка воспроизведения:", err));
-
-    // Через 3.010 сек — исчезновение
-    setTimeout(() => {
-      gifImage.style.animation = "logoSpawnOut 0.6s ease-in forwards";
-      setTimeout(() => {
-        gifContainer.remove();
-        isPlaying = false;
-      }, 600); // длительность исчезновения
-    }, 3010);
-  });
-});
-
-function showPromoAnimation(gifPath, soundPath, durationMs = 3010) {
-  let isPlaying = true;
-
-  // Контейнер
-  const gifContainer = document.createElement("div");
-  gifContainer.style.position = "fixed";
-  gifContainer.style.left = "50%";
-  gifContainer.style.bottom = "50px";
-  gifContainer.style.transform = "translateX(-50%)";
-  gifContainer.style.zIndex = "9999";
-  gifContainer.style.pointerEvents = "none";
-
-  // Гифка
-  const gifImage = document.createElement("img");
-  gifImage.src = gifPath + "?t=" + Date.now(); // сброс кеша
-  gifImage.style.maxWidth = "300px";
-  gifImage.style.animation = "logoSpawnIn 0.8s ease-out forwards";
-  gifContainer.appendChild(gifImage);
-  document.body.appendChild(gifContainer);
-
-  // Звук
-  const sound = new Audio(soundPath);
-  sound.volume = 1.0;
-  sound.play().catch(err => console.warn("Ошибка воспроизведения:", err));
-
-  // Исчезновение после заданной длительности
-  setTimeout(() => {
-    gifImage.style.animation = "logoSpawnOut 0.6s ease-in forwards";
-    setTimeout(() => {
-      gifContainer.remove();
-      isPlaying = false;
-    }, 600);
-  }, durationMs);
-}
-
-
-
-
-
-
-
-
-
-
 
