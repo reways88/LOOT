@@ -1,170 +1,3 @@
-
-// === Глобальные функции и оптимизация под мобильные ===
-
-// Глобальные функции, чтобы HTML их видел
-if (typeof window.showTab !== "function") {
-    window.showTab = function(tabName) {
-        const balanceSpan = document.getElementById('balance');
-        const currencySpan = document.querySelector('.currency');
-        const tabs = document.querySelectorAll('.tab');
-
-        if (typeof balanceHidden !== "undefined" && typeof savedBalance !== "undefined") {
-            if (tabName === 'miner' || tabName === 'rocket') {
-                if (balanceHidden) {
-                    balanceSpan.textContent = savedBalance;
-                    currencySpan.style.display = 'inline';
-                    balanceHidden = false;
-                }
-            } else {
-                if (!balanceHidden) {
-                    savedBalance = balanceSpan.textContent;
-                    balanceSpan.textContent = 'Баланс скрыт';
-                    currencySpan.style.display = 'none';
-                    balanceHidden = true;
-                }
-            }
-        }
-
-        tabs.forEach(tab => tab.style.display = 'none');
-        const activeTab = document.getElementById(tabName);
-        if (activeTab) activeTab.style.display = 'block';
-    };
-}
-
-if (typeof window.openPromoModal !== "function") {
-    window.openPromoModal = function() {
-        document.getElementById("promoModal").style.display = "block";
-    };
-}
-
-if (typeof window.closePromoModal !== "function") {
-    window.closePromoModal = function() {
-        document.getElementById("promoModal").style.display = "none";
-    };
-}
-
-if (typeof window.applyPromoCode !== "function") {
-    window.applyPromoCode = function() {
-        const promoInput = document.getElementById("promoCode");
-        if (!promoInput) return console.error("#promoCode не найден");
-        const code = promoInput.value.trim().toUpperCase();
-        const status = document.getElementById("promoStatus");
-
-        switch (code) {
-            case "MELL":
-                if (typeof balance !== "undefined") balance += 100;
-                status.textContent = "MELL: +100₽ — удача на твоей стороне";
-                if (typeof showPromoAnimation === "function") {
-                    showPromoAnimation("assets/mell.gif", "assets/mell.mp3", 8018);
-                }
-                break;
-            default:
-                status.textContent = "❌ Неверный промокод";
-        }
-        if (typeof updateBalance === "function") updateBalance();
-        window.closePromoModal();
-    };
-}
-
-["startGame","cashOut","startRocket","cashOutRocket"].forEach(fn => {
-    if (typeof window[fn] !== "function") {
-        window[fn] = function() {
-            const internal = window["_" + fn + "Internal"];
-            if (typeof internal === "function") {
-                internal();
-            } else {
-                console.error("Внутренняя функция _" + fn + "Internal не найдена");
-            }
-        };
-    }
-});
-
-// Оптимизация под мобильные устройства
-document.addEventListener("DOMContentLoaded", () => {
-    // Масштабируем гифки и модалки
-    const style = document.createElement("style");
-    style.textContent = `
-        /* Центрирование сетки Минёра на мобилках */
-        .miner-grid {
-            margin: 0 auto !important;
-            display: grid !important;
-            justify-content: center !important;
-        }
-
-        /* Слоты: рамка на мобилках */
-        .slots-container {
-            box-sizing: border-box;
-            border-right: 4px solid purple;
-            width: 100% !important;
-            max-width: 100vw !important;
-            overflow: hidden;
-        }
-        /* Текст Rocket Crash и Miner */
-        .rocket-text, .miner-text, #status {
-            font-size: clamp(12px, 4vw, 20px);
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            padding: 0 5px;
-            box-sizing: border-box;
-        }
-
-        img, video {
-            max-width: 90vw !important;
-            height: auto !important;
-        }
-        .modal {
-            width: 90vw !important;
-            left: 5vw !important;
-        }
-        button {
-            min-height: 48px;
-            min-width: 48px;
-        }
-    `;
-    document.head.appendChild(style);
-
-    // Добавляем поддержку touchstart для кнопок
-    document.querySelectorAll("button, .clickable").forEach(el => {
-        el.addEventListener("touchstart", e => {
-            e.currentTarget.click();
-        
-    // === Вибрация Минёра ===
-    document.querySelectorAll('.miner-cell').forEach(cell => {
-        cell.addEventListener('click', () => {
-            if (cell.classList.contains('bomb')) {
-                if (navigator.vibrate) navigator.vibrate([200, 100, 200]); // Бомба
-            } else if (cell.classList.contains('safe')) {
-                if (navigator.vibrate) navigator.vibrate([100]); // Безопасно
-            }
-        });
-    });
-
-    // === Вибрация в Ракетке ===
-    const rocketExplodeEl = document.getElementById('rocketExplode');
-    if (rocketExplodeEl) {
-        rocketExplodeEl.addEventListener('explosion', () => {
-            if (navigator.vibrate) navigator.vibrate([300, 150, 300]); // Взрыв
-        });
-    }
-
-});
-    });
-
-    // Пасхалка
-    const egg = document.getElementById("easterEgg");
-    if (egg) {
-        egg.addEventListener("click", () => {
-            const audio = new Audio("assets/easteregg.mp3");
-            audio.play().catch(err => console.warn("Ошибка пасхалки:", err));
-        });
-        egg.addEventListener("touchstart", () => {
-            const audio = new Audio("assets/easteregg.mp3");
-            audio.play().catch(err => console.warn("Ошибка пасхалки:", err));
-        });
-    }
-});
-
-
 // 🌐 Переключение вкладок
 function showTab(tabId) {
   document.querySelectorAll('.tab').forEach(tab => tab.style.display = 'none');
@@ -519,4 +352,116 @@ function showTab(tabName) {
     activeTab.style.display = 'block';
   }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const egg = document.getElementById("easterEgg");
+  const sound = document.getElementById("mellstroySound");
+  let lastPlayed = 0;
+  const cooldown = 15000;
+
+  sound.volume = 0.3; // 👈 вот тут регулируем громкость
+
+  if (egg && sound) {
+    egg.style.cursor = "pointer";
+
+    egg.addEventListener("click", () => {
+      const now = Date.now();
+      if (now - lastPlayed >= cooldown) {
+        sound.currentTime = 0;
+        sound.play();
+        lastPlayed = now;
+      } else {
+        console.log("⏳ Подожди немного перед следующим запуском");
+      }
+    });
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const logo = document.querySelector(".logo");
+  const soundSrc = "assets/logo-sound.mp3";
+  const gifSrc = "assets/logo-animation.gif";
+  let isPlaying = false;
+
+  logo.addEventListener("click", () => {
+    if (isPlaying) return;
+    isPlaying = true;
+
+    // Контейнер
+    const gifContainer = document.createElement("div");
+    gifContainer.style.position = "fixed";
+    gifContainer.style.left = "50%";
+    gifContainer.style.bottom = "50px";
+    gifContainer.style.transform = "translateX(-50%)";
+    gifContainer.style.zIndex = "9999";
+    gifContainer.style.pointerEvents = "none";
+
+    // Гифка
+    const gifImage = document.createElement("img");
+    gifImage.src = gifSrc + "?t=" + Date.now(); // сброс кеша
+    gifImage.style.maxWidth = "300px";
+    gifImage.style.animation = "logoSpawnIn 0.8s ease-out forwards"; // только появление
+    gifContainer.appendChild(gifImage);
+    document.body.appendChild(gifContainer);
+
+    // Запуск звука
+    const sound = new Audio(soundSrc);
+    sound.volume = 1.0;
+    sound.play().catch(err => console.warn("Ошибка воспроизведения:", err));
+
+    // Через 3.010 сек — исчезновение
+    setTimeout(() => {
+      gifImage.style.animation = "logoSpawnOut 0.6s ease-in forwards";
+      setTimeout(() => {
+        gifContainer.remove();
+        isPlaying = false;
+      }, 600); // длительность исчезновения
+    }, 3010);
+  });
+});
+
+function showPromoAnimation(gifPath, soundPath, durationMs = 3010) {
+  let isPlaying = true;
+
+  // Контейнер
+  const gifContainer = document.createElement("div");
+  gifContainer.style.position = "fixed";
+  gifContainer.style.left = "50%";
+  gifContainer.style.bottom = "50px";
+  gifContainer.style.transform = "translateX(-50%)";
+  gifContainer.style.zIndex = "9999";
+  gifContainer.style.pointerEvents = "none";
+
+  // Гифка
+  const gifImage = document.createElement("img");
+  gifImage.src = gifPath + "?t=" + Date.now(); // сброс кеша
+  gifImage.style.maxWidth = "300px";
+  gifImage.style.animation = "logoSpawnIn 0.8s ease-out forwards";
+  gifContainer.appendChild(gifImage);
+  document.body.appendChild(gifContainer);
+
+  // Звук
+  const sound = new Audio(soundPath);
+  sound.volume = 1.0;
+  sound.play().catch(err => console.warn("Ошибка воспроизведения:", err));
+
+  // Исчезновение после заданной длительности
+  setTimeout(() => {
+    gifImage.style.animation = "logoSpawnOut 0.6s ease-in forwards";
+    setTimeout(() => {
+      gifContainer.remove();
+      isPlaying = false;
+    }, 600);
+  }, durationMs);
+}
+
+
+
+
+
+
+
+
+
+
 
