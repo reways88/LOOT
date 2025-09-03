@@ -12,7 +12,7 @@ LOOT — это интерактивный симулятор азартных �
 
 Проект размещен на GitHub Pages — просто перейдите по ссылке и начните играть:
 
-https://reways88.github.io/kick/
+https://reways88.github.io/loot
 
 
 <img width="1024" height="751" alt="logo" src="https://github.com/user-attachments/assets/44ef057d-775c-40a1-9c05-c800bfce5124" />
