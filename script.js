@@ -328,7 +328,7 @@ let isHidden = false;
 
 function showTab(tabName) {
   // 🔒 Логика баланса
-  if (tabName === 'miner' || tabName === 'rocket') {
+  if (tabName === 'miner' || tabName === 'rocket' || tabName === 'penalty') { // ← добавил penalty
     if (isHidden) {
       balanceSpan.textContent = savedBalance;
       currencySpan.style.display = 'inline';
@@ -378,6 +378,18 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+	// === случайный сдвиг перчаток влево-вправо в idle ===
+setInterval(() => {
+  if (gloves.classList.contains("idle")) {
+    const shift = (Math.random() - 0.5) * 40; // от -20px до +20px
+    gloves.style.transform = `translateX(${shift}px)`; 
+    setTimeout(() => {
+      if (gloves.classList.contains("idle")) {
+        gloves.style.transform = `translateX(0px)`; // возврат в центр
+      }
+    }, 800); // плавный возврат
+  }
+}, 2500); // каждые 2.5 сек новое движение
   const logo = document.querySelector(".logo");
   const soundSrc = "assets/logo-sound.mp3";
   const gifSrc = "assets/logo-animation.gif";
@@ -486,6 +498,116 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+// === ПЕНАЛЬТИ ===
+let ball, gloves;
+
+document.addEventListener("DOMContentLoaded", () => {
+  ball = document.getElementById("penaltyBall");
+  gloves = document.getElementById("goalieGloves");
+
+  const targets = document.querySelectorAll("#penalty .target");
+  const penaltyStatus = document.getElementById("penaltyStatus");
+
+  // Включаем idle при загрузке
+  ball.classList.add("idle");
+  gloves.classList.add("idle");
+
+  const kickSound = document.getElementById("kickSound");
+  const goalSound = document.getElementById("goalSound");
+  const saveSound = document.getElementById("saveSound");
+
+  targets.forEach(target => {
+    target.addEventListener("click", () => {
+      let bet = parseInt(document.getElementById("penaltyBet").value);
+      let balanceEl = document.getElementById("balance");
+      let balance = parseInt(balanceEl.textContent.replace(/\D/g, "")) || 0;
+
+      // Отключаем idle на время удара
+      ball.classList.remove("idle");
+      gloves.classList.remove("idle");
+
+      if (isNaN(bet) || bet <= 0 || bet > balance) {
+        penaltyStatus.textContent = "❌ Некорректная ставка";
+        // Возвращаем idle, если удар не начался
+        ball.classList.add("idle");
+        gloves.classList.add("idle");
+        return;
+      }
+
+      // Списываем ставку
+      balance -= bet;
+      balanceEl.textContent = balance;
+
+      // Звук удара
+      kickSound.currentTime = 0;
+      kickSound.play();
+
+      let playerZone = parseInt(target.dataset.zone);
+      let goalieZone;
+      if (Math.random() < 0.6) { // 60% шанс, что вратарь угадает
+        goalieZone = playerZone;
+      } else {
+        goalieZone = Math.floor(Math.random() * 9);
+      }
+
+      moveBallToZone(playerZone);
+      moveGlovesToZone(goalieZone);
+
+      setTimeout(() => {
+        if (playerZone === goalieZone) {
+          saveSound.currentTime = 0;
+          saveSound.play();
+          penaltyStatus.textContent = "🧤 Сейв! Вы проиграли";
+        } else {
+          goalSound.currentTime = 0;
+          goalSound.play();
+          let win = Math.floor(bet * 2.5);
+          balance += win;
+          balanceEl.textContent = balance;
+          penaltyStatus.textContent = `⚽ Гол! Вы выиграли ${win}₽`;
+        }
+
+        resetBallAndGloves();
+      }, 1000);
+    });
+  });
+});
+
+function moveBallToZone(zone) {
+  const positions = [
+    {x: 160, y: 160}, {x: 460, y: 160}, {x: 760, y: 160},
+    {x: 160, y: 320}, {x: 460, y: 320}, {x: 760, y: 320},
+    {x: 160, y: 480}, {x: 460, y: 480}, {x: 760, y: 480}
+  ];
+  ball.style.left = positions[zone].x + "px";
+  ball.style.top = positions[zone].y + "px";
+}
+
+function moveGlovesToZone(zone) {
+  const positions = [
+    {x: 130, y: 140}, {x: 430, y: 140}, {x: 730, y: 140},
+    {x: 130, y: 300}, {x: 430, y: 300}, {x: 730, y: 300},
+    {x: 130, y: 460}, {x: 430, y: 460}, {x: 730, y: 460}
+  ];
+  gloves.style.left = positions[zone].x + "px";
+  gloves.style.top = positions[zone].y + "px";
+}
+
+function resetBallAndGloves() {
+  setTimeout(() => {
+    ball.style.left = "462px";
+    ball.style.bottom = "40px";
+    ball.style.top = "";
+    gloves.style.left = "400px";
+    gloves.style.top = "180px";
+
+    // Возвращаем idle
+    ball.classList.add("idle");
+    gloves.classList.add("idle");
+  }, 800);
+}
+
 
 
 

@@ -327,4 +327,95 @@ footer {
 }
 
 
+/* ===== Пенальти ===== */
+.penalty-field {
+  position: relative;
+  width: 1000px; /* размер поля */
+  height: 750px; /* пропорционально воротам 1280x960 */
+  margin: 20px auto;
+}
+
+.goal-bg {
+  width: 100%;
+  height: auto;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+.gloves {
+  position: absolute;
+  width: 240px; /* было 200px → стало больше */
+  top: 180px;
+  left: 400px;
+  transition: all 0.5s ease;
+  z-index: 3;
+}
+
+.ball {
+  position: absolute;
+  width: 140px; /* было 75px → стало больше */
+  bottom: 40px;
+  left: 462px;
+  transition: all 0.6s ease;
+  z-index: 4;
+}
+
+/* Сетка мишеней поверх ворот */
+.targets {
+  position: absolute;
+  top: 140px;
+  left: 100px;
+  width: 800px;
+  height: 480px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  z-index: 5;
+}
+
+.target {
+  background: none;
+  cursor: pointer;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 180px 180px; /* размер прицела */
+  transition: transform 0.2s ease;
+}
+
+.target:hover {
+  background-image: url("assets/crosshair.png");
+  transform: scale(1.2);
+}
+/* Мяч — подпрыгивания выше и быстрее */
+@keyframes ballIdle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); } /* было -5px → теперь выше */
+}
+
+/* Перчатки — медленное "дыхание" + лёгкое смещение */
+@keyframes glovesIdle {
+  0%   { transform: translateY(0) translateX(0); }
+  30%  { transform: translateY(5px) translateX(-2px); }
+  60%  { transform: translateY(-3px) translateX(2px); }
+  100% { transform: translateY(0) translateX(0); }
+}
+
+.ball.idle {
+  animation: ballIdle 1.2s ease-in-out infinite; /* быстрее */
+}
+
+.gloves.idle {
+  animation: glovesIdle 2.4s ease-in-out infinite; /* медленнее */
+}
+#penaltyBet {
+  font-size: 24px; /* крупный текст */
+  padding: 5px 10px; /* увеличенные отступы */
+  width: 250px; /* в 5 раз шире стандартного ~50px */
+  box-sizing: border-box;
+  text-align: center; /* цифры по центру */
+}
+
+
+
 
