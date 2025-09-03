@@ -104,7 +104,7 @@ function startGame() {
   bombIndexes = [];
   cells = [];
 
-  while (bombIndexes.length < 6) {                    ///кол-во бомб
+  while (bombIndexes.length < 4) {                    ///кол-во бомб
     const index = Math.floor(Math.random() * 25);
     if (!bombIndexes.includes(index)) bombIndexes.push(index);
   }
@@ -545,7 +545,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       let playerZone = parseInt(target.dataset.zone);
       let goalieZone;
-      if (Math.random() < 0.6) { // 60% шанс, что вратарь угадает
+      if (Math.random() < 0.45) { // 60% шанс, что вратарь угадает
         goalieZone = playerZone;
       } else {
         goalieZone = Math.floor(Math.random() * 9);
@@ -562,7 +562,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           goalSound.currentTime = 0;
           goalSound.play();
-          let win = Math.floor(bet * 2.5);
+          let win = Math.floor(bet * 3);
           balance += win;
           balanceEl.textContent = balance;
           penaltyStatus.textContent = `⚽ Гол! Вы выиграли ${win}₽`;
@@ -607,6 +607,7 @@ function resetBallAndGloves() {
     gloves.classList.add("idle");
   }, 800);
 }
+
 
 
 
